@@ -6,7 +6,7 @@
 /*   By: carbon-m <carbon-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:45:21 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/01/13 17:33:48 by carbon-m         ###   ########.fr       */
+/*   Updated: 2025/01/13 18:27:16 by carbon-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,17 @@
 # include <stdio.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-# include<sys/types.h>
-# include<sys/stat.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 # include <fcntl.h>  
 # include <stdlib.h>
 # include "../libft/libft.h"
 
 void	child(char *argv[], int *pipefd, char **env);
 void	parent(char *argv[], int *pipefd, char **env);
-void process(char *argv, char **env);
-int	open_flags(char *argv, int proc);
-
+void	process(char *argv, char **env);
+int		open_flags(char *argv, int proc);
+char	*check_path(char *command, char **env);
+char	*get_path(char **env);
 
 #endif

@@ -7,7 +7,7 @@ CFLAGS = -Werror -Wall -Wextra -fsanitize=address
 RM = rm -rf
 
 SRCS = 	src/pipex.c\
-		src/utils.c\
+		src/pipex_utils.c\
 		libft/libft.a\
 
 $(NAME) :
