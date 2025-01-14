@@ -6,11 +6,25 @@
 /*   By: carbon-m <carbon-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:35:29 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/01/13 18:54:43 by carbon-m         ###   ########.fr       */
+/*   Updated: 2025/01/14 13:59:14 by carbon-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+int	open_flags(char *argv, int proc)
+{
+	int	fd;
+
+	fd = 0;
+	if (proc == 0)
+		fd = open(argv, O_RDONLY, 0777);
+	if (proc == 0)
+		fd = open(argv, O_CREAT, O_WRONLY, O_TRUNC, 0777);
+	if (fd == -1)
+		exit (-1);
+	return (fd);
+}
 
 char	*get_path(char **env)
 {
@@ -32,25 +46,39 @@ char	*get_path(char **env)
 	exit (NULL);
 }
 
-char	*check_path(char *command, char **env)
+char	*check_path(char *command, char **env, int format)
 {
 	char	*path;
 	char	**split_path;
+	int		i;
+	char	*path_command;
 
-	path = get_path(env);
+	split_path = ft_split(get_path(env), ':');
+	i = 0;
+	while (split_path[i])
+	{
+		path = ft_strjoin(path, split_path[i]);
+	}
 	return (path);
 }
 
-int	open_flags(char *argv, int proc)
+char	*get_arg(char *argv, int format)
 {
-	int	fd;
-
-	fd = 0;
-	if (proc == 0)
-		fd = open(argv, O_RDONLY, 0777);
-	if (proc == 0)
-		fd = open(argv, O_CREAT, O_WRONLY, O_TRUNC, 0777);
-	if (fd == -1)
-		exit (-1);
-	return (fd);
+	char	**command;
+	int		i;
+	
+	if (format == 1)
+	{
+		command = ft_split(argv, '/');
+		i = 0;
+		while (command[i])
+			++i;
+		return (command[i - 1]);
+	}
+	else
+	{
+		command = ft_split(argv, ' ');
+		return (command[0]);
+	}
+	return (NULL);
 }

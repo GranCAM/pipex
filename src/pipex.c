@@ -6,7 +6,7 @@
 /*   By: carbon-m <carbon-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:02:20 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/01/13 18:35:14 by carbon-m         ###   ########.fr       */
+/*   Updated: 2025/01/14 14:01:10 by carbon-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,16 @@ void	process(char *argv, char **env)
 	int		ret;
 	char	*path;
 	char	**command;
+	int		i;
+	int command_format;
 
-	command = ft_split(argv, ' ');
-	path = check_path(command[0], env);
-	ret = execve(path, argv, env);
-	if (ret == -1)
+	if (ft_strchr(argv, '/'))
+		command_format = 1;
+	else
+		command_format = 2;
+	command = get_arg(argv, command_format);
+	path = check_path (argv, env, command_format);
+	if (execve(path, command, env) == -1)
 	{
 		ft_putstr_fd("\npath/command not found\n\n", 2);
 		exit (-1);
