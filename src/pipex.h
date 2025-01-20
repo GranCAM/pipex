@@ -6,7 +6,7 @@
 /*   By: carbon-m <carbon-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:45:21 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/01/20 12:59:30 by carbon-m         ###   ########.fr       */
+/*   Updated: 2025/01/20 13:21:17 by carbon-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,6 @@ char	*check_path(char *command, char **env, int format);
 char	*get_path(char **env);
 char	*get_arg(char *argv, int format);
 char	*flags_arg(char *argv);
+void	freall(char **all);
 
 #endif

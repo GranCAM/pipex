@@ -6,7 +6,7 @@
 /*   By: carbon-m <carbon-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:02:20 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/01/20 13:07:35 by carbon-m         ###   ########.fr       */
+/*   Updated: 2025/01/20 13:20:01 by carbon-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,17 @@ void	process(char *argv, char **env)
 		ft_putstr_fd("\npath/command not found\n\n", 2);
 		exit (-1);
 	}
+}
+
+int	open_flags(char *argv, int proc)
+{
+	int	fd;
+
+	if (proc == 0)
+		fd = open(argv, O_RDONLY, 0777);
+	else if (proc == 1)
+		fd = open(argv, O_CREAT, O_WRONLY, O_TRUNC, 0777);
+	if (fd == -1)
+		exit (-1);
+	return (fd);
 }

@@ -6,24 +6,11 @@
 /*   By: carbon-m <carbon-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:35:29 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/01/20 13:08:55 by carbon-m         ###   ########.fr       */
+/*   Updated: 2025/01/20 13:22:59 by carbon-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-int	open_flags(char *argv, int proc)
-{
-	int	fd;
-
-	if (proc == 0)
-		fd = open(argv, O_RDONLY, 0777);
-	else if (proc == 1)
-		fd = open(argv, O_CREAT, O_WRONLY, O_TRUNC, 0777);
-	if (fd == -1)
-		exit (-1);
-	return (fd);
-}
 
 char	*get_path(char **env)
 {
@@ -39,7 +26,10 @@ char	*get_path(char **env)
 			++j;
 		envar = ft_substr(env[i], 0, j);
 		if (ft_strncmp(envar, "PATH", 4) == 0)
+		{
+			free(envar);
 			return (env[i] + j + 1);
+		}
 		++i;
 	}
 	return (NULL);
@@ -63,6 +53,7 @@ char	*check_path(char *command, char **env, int format)
 		path = ft_strjoin(path, "/");
 		path = ft_strjoin(path, split_path[i]);
 	}
+	freall(split_path);
 	return (path);
 }
 
@@ -97,4 +88,14 @@ char	*flags_arg(char *argv)
 		++i;
 	flags = ft_strdup(argv + i);
 	return (flags);
+}
+
+void	freall(char **all)
+{
+	size_t	i;
+
+	i = -1;
+	while (all[i++])
+		free(all[i]);
+	free(all);
 }
