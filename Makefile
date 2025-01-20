@@ -1,6 +1,6 @@
 NAME = pipex
 
-CC = cc
+CC = gcc
 
 CFLAGS = -Werror -Wall -Wextra -fsanitize=address
 

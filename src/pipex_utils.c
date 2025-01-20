@@ -6,7 +6,7 @@
 /*   By: carbon-m <carbon-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:35:29 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/01/14 15:18:33 by carbon-m         ###   ########.fr       */
+/*   Updated: 2025/01/20 13:08:55 by carbon-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*get_path(char **env)
 			return (env[i] + j + 1);
 		++i;
 	}
-	exit (NULL);
+	return (NULL);
 }
 
 char	*check_path(char *command, char **env, int format)
@@ -50,7 +50,6 @@ char	*check_path(char *command, char **env, int format)
 	char	*path;
 	char	**split_path;
 	int		i;
-	char	*path_command;
 
 	if (format == 1)
 	{
@@ -61,6 +60,7 @@ char	*check_path(char *command, char **env, int format)
 	i = 0;
 	while (split_path[i])
 	{
+		path = ft_strjoin(path, "/");
 		path = ft_strjoin(path, split_path[i]);
 	}
 	return (path);
@@ -70,7 +70,7 @@ char	*get_arg(char *argv, int format)
 {
 	char	**command;
 	int		i;
-	
+
 	if (format == 1)
 	{
 		command = ft_split(argv, '/');
@@ -85,4 +85,16 @@ char	*get_arg(char *argv, int format)
 		return (command[0]);
 	}
 	return (NULL);
+}
+
+char	*flags_arg(char *argv)
+{
+	int		i;
+	char	*flags;
+
+	i = 0;
+	while (argv[i] != ' ')
+		++i;
+	flags = ft_strdup(argv + i);
+	return (flags);
 }

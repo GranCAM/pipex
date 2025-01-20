@@ -6,7 +6,7 @@
 /*   By: carbon-m <carbon-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:02:20 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/01/14 15:16:45 by carbon-m         ###   ########.fr       */
+/*   Updated: 2025/01/20 13:07:35 by carbon-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ void	parent(char *argv[], int *pipefd, char **env)
 
 void	process(char *argv, char **env)
 {
-	int		ret;
 	char	**command;
 	int		command_format;
 
@@ -68,8 +67,11 @@ void	process(char *argv, char **env)
 		command_format = 1;
 	else
 		command_format = 2;
+	command = ft_calloc(1, 8191);
 	command[1] = get_arg(argv, command_format);
 	command[0] = check_path (argv, env, command_format);
+	if (ft_strchr(argv, ' '))
+		command[2] = flags_arg(argv);
 	if (execve(command[0], command, env) == -1)
 	{
 		ft_putstr_fd("\npath/command not found\n\n", 2);
