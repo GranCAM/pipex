@@ -6,7 +6,7 @@
 /*   By: carbon-m <carbon-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:02:20 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/01/14 14:01:10 by carbon-m         ###   ########.fr       */
+/*   Updated: 2025/01/14 15:16:45 by carbon-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ int	main(int argc, char *argv[], char **env)
 	if (pid == 0)
 		child(argv, pipefd, env);
 	else
+	{
 		parent(argv, pipefd, env);
+		wait(NULL);
+	}
 }
 
 void	child(char *argv[], int *pipefd, char **env)
@@ -58,18 +61,16 @@ void	parent(char *argv[], int *pipefd, char **env)
 void	process(char *argv, char **env)
 {
 	int		ret;
-	char	*path;
 	char	**command;
-	int		i;
-	int command_format;
+	int		command_format;
 
 	if (ft_strchr(argv, '/'))
 		command_format = 1;
 	else
 		command_format = 2;
-	command = get_arg(argv, command_format);
-	path = check_path (argv, env, command_format);
-	if (execve(path, command, env) == -1)
+	command[1] = get_arg(argv, command_format);
+	command[0] = check_path (argv, env, command_format);
+	if (execve(command[0], command, env) == -1)
 	{
 		ft_putstr_fd("\npath/command not found\n\n", 2);
 		exit (-1);

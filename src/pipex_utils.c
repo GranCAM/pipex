@@ -6,7 +6,7 @@
 /*   By: carbon-m <carbon-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:35:29 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/01/14 13:59:14 by carbon-m         ###   ########.fr       */
+/*   Updated: 2025/01/14 15:18:33 by carbon-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,9 @@ int	open_flags(char *argv, int proc)
 {
 	int	fd;
 
-	fd = 0;
 	if (proc == 0)
 		fd = open(argv, O_RDONLY, 0777);
-	if (proc == 0)
+	else if (proc == 1)
 		fd = open(argv, O_CREAT, O_WRONLY, O_TRUNC, 0777);
 	if (fd == -1)
 		exit (-1);
@@ -53,6 +52,11 @@ char	*check_path(char *command, char **env, int format)
 	int		i;
 	char	*path_command;
 
+	if (format == 1)
+	{
+		if (access(command, F_OK) == 0 && access(command, X_OK) == 0)
+			return (command);
+	}
 	split_path = ft_split(get_path(env), ':');
 	i = 0;
 	while (split_path[i])
