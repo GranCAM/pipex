@@ -6,7 +6,7 @@
 /*   By: carbon-m <carbon-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:45:21 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/01/21 19:13:25 by carbon-m         ###   ########.fr       */
+/*   Updated: 2025/01/27 18:28:30 by carbon-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,9 @@ void	child(char *argv[], int *pipefd, char **env);
 void	child2(char *argv[], int *pipefd, char **env);
 void	process(char *argv, char **env);
 int		open_flags(char *argv, int proc);
-char	*check_path(char *command, char **env, int format);
+char	*check_path(char *command, char **env, int format, char *command_clean);
 char	*get_path(char **env);
-char	*get_arg(char *argv, int format);
-char	*flags_arg(char *argv);
+char	**get_arg(char *argv, int format);
 void	freall(char **all);
 
 #endif
