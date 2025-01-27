@@ -6,7 +6,7 @@
 /*   By: carbon-m <carbon-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:45:21 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/01/20 13:21:17 by carbon-m         ###   ########.fr       */
+/*   Updated: 2025/01/21 19:13:25 by carbon-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include "../libft/libft.h"
 
 void	child(char *argv[], int *pipefd, char **env);
-void	parent(char *argv[], int *pipefd, char **env);
+void	child2(char *argv[], int *pipefd, char **env);
 void	process(char *argv, char **env);
 int		open_flags(char *argv, int proc);
 char	*check_path(char *command, char **env, int format);

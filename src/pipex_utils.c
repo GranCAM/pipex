@@ -6,7 +6,7 @@
 /*   By: carbon-m <carbon-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:35:29 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/01/20 13:22:59 by carbon-m         ###   ########.fr       */
+/*   Updated: 2025/01/21 19:12:42 by carbon-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,13 @@
 
 char	*get_path(char **env)
 {
-	char	*envar;
 	int		i;
-	int		j;
-
+	
 	i = 0;
-	j = 0;
 	while (env[i])
 	{
-		while (env[i][j] != '=')
-			++j;
-		envar = ft_substr(env[i], 0, j);
-		if (ft_strncmp(envar, "PATH", 4) == 0)
-		{
-			free(envar);
-			return (env[i] + j + 1);
-		}
+		if (ft_strncmp(env[i], "PATH=", 5) == 0)
+			return (env[i]  + 5);
 		++i;
 	}
 	return (NULL);
@@ -53,7 +44,7 @@ char	*check_path(char *command, char **env, int format)
 		path = ft_strjoin(path, "/");
 		path = ft_strjoin(path, split_path[i]);
 	}
-	freall(split_path);
+	ft_frematrix(split_path);
 	return (path);
 }
 
@@ -88,14 +79,4 @@ char	*flags_arg(char *argv)
 		++i;
 	flags = ft_strdup(argv + i);
 	return (flags);
-}
-
-void	freall(char **all)
-{
-	size_t	i;
-
-	i = -1;
-	while (all[i++])
-		free(all[i]);
-	free(all);
 }
