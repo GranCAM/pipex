@@ -6,7 +6,7 @@
 /*   By: carbon-m <carbon-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:02:20 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/02/10 18:30:25 by carbon-m         ###   ########.fr       */
+/*   Updated: 2025/02/10 19:04:24 by carbon-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 int	main(int argc, char *argv[], char **env)
 {
 	int		pipefd[2];
-	int		status;
 	pid_t	pid;
-	int		res;
 
 	if (argc != 5 || argv[1][0] == 0 || argv[4][0] == 0)
 	{
@@ -30,14 +28,9 @@ int	main(int argc, char *argv[], char **env)
 	child2(argv, pipefd, env, &pid);
 	close (pipefd[0]);
 	close (pipefd[1]);
-	res = 0;
-	if (waitpid(-1, &status, 0) == pid)
-		if (WIFEXITED(status))
-			res = WEXITSTATUS(status);
-	if (waitpid(-1, &status, 0) == pid)
-		if (WIFEXITED(status))
-			res = WEXITSTATUS(status);
-	return (res);
+	waitpid(-1, NULL, 0);
+	waitpid(-1, NULL, 0);
+	return (0);
 }
 
 void	child(char **argv, int *pipefd, char **env)

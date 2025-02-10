@@ -6,7 +6,7 @@
 /*   By: carbon-m <carbon-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:35:29 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/02/06 18:17:06 by carbon-m         ###   ########.fr       */
+/*   Updated: 2025/02/10 19:00:08 by carbon-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,9 @@ char	*check_path(char *command, char **env, char **command_clean)
 		++i;
 	}
 	return (ft_frematrix(command_clean), ft_frematrix(split_path),
+		ft_putstr_fd("zsh: command not found :", STDERR_FILENO),
 		ft_putstr_fd(command, STDERR_FILENO),
-		ft_putendl_fd(": command not found", STDERR_FILENO), exit(127), NULL);
+		ft_putendl_fd("", STDERR_FILENO), exit(127), NULL);
 }
 
 char	**get_arg(char **argv, int num)
