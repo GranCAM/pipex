@@ -6,7 +6,7 @@
 /*   By: carbon-m <carbon-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:19:54 by carbon-m          #+#    #+#             */
-/*   Updated: 2024/10/16 14:57:20 by carbon-m         ###   ########.fr       */
+/*   Updated: 2025/02/06 18:17:35 by carbon-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,13 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 
 	if (!s)
 		return (NULL);
+	if (len == ft_strlen(s) && start == 0)
+		return (res = ft_strdup(s), res);
 	if (len > (ft_strlen(s) - start))
 		len = ft_strlen(s) - start;
 	if (start > ft_strlen(s))
 		return (ft_strdup(""));
-	res = malloc(len + 1);
+	res = ft_calloc (len + 2, 1);
 	if (!res)
 		return (0);
 	if ((size_t)start >= ft_strlen((char *)s) || len == 0)

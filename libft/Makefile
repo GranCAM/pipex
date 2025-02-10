@@ -10,7 +10,7 @@ SRCS	= 	ft_bzero.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
 			ft_substr.c ft_calloc.c ft_strtrim.c \
 			ft_itoa.c ft_strmapi.c ft_striteri.c ft_putchar_fd.c \
 			ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c \
-			ft_split.c ft_freematrix.c\
+			ft_split.c ft_freematrix.c ft_strjoin_free.c\
 			
 
 BONUS_SRCS = ft_lstnew_bonus.c ft_lstadd_front_bonus.c ft_lstsize_bonus.c \

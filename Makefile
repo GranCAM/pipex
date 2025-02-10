@@ -1,8 +1,8 @@
 NAME = pipex
 
-CC = gcc
+CC = cc
 
-CFLAGS = -Werror -Wall -Wextra -fsanitize=address,undefined,leak
+CFLAGS = -Werror -Wall -Wextra -g3
 
 RM = rm -rf
 

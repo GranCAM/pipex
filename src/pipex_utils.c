@@ -6,7 +6,7 @@
 /*   By: carbon-m <carbon-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:35:29 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/01/27 19:03:08 by carbon-m         ###   ########.fr       */
+/*   Updated: 2025/02/06 18:17:06 by carbon-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,76 +15,79 @@
 char	*get_path(char **env)
 {
 	int		i;
-	
+
 	i = 0;
 	while (env[i])
 	{
 		if (ft_strncmp(env[i], "PATH=", 5) == 0)
-			return (env[i]  + 5);
+			return (env[i] + 5);
 		++i;
 	}
 	return (NULL);
 }
 
-char	*check_path(char *command, char **env, int format, char *command_clean)
+char	*check_path(char *command, char **env, char **command_clean)
 {
 	char	*path;
 	char	**split_path;
 	int		i;
 
-	write(2,"in checkpath\n", 13);
-	if (format == 1)
-	{
-		if (access(command, F_OK) == 0 && access(command, X_OK) == 0)
-			return (command);
-		else
-			exit (-1);
-	}
+	if (access(command, F_OK) == 0 && access(command, X_OK) == 0)
+		return (command);
 	split_path = ft_split(get_path(env), ':');
-	write(2, "Getpath done\n",13);
 	i = 0;
 	while (split_path[i])
 	{
 		path = ft_strdup(split_path[i]);
-		path = ft_strjoin(path, "/");
-		path = ft_strjoin(path, command_clean);
+		path = ft_strjoin_free(path, "/");
+		path = ft_strjoin_free(path, command_clean[0]);
 		if (access(path, F_OK) == 0 && access(path, X_OK) == 0)
 		{
-			write(2, "Path:",5);
-			write(2, path, ft_strlen(path));
-			write(2, "\n",1);
 			ft_frematrix(split_path);
 			return (path);
 		}
 		free(path);
 		++i;
 	}
-	ft_frematrix(split_path);
-	perror("LA CAGASTE");
-	exit(-1);
-	return (NULL);
+	return (ft_frematrix(command_clean), ft_frematrix(split_path),
+		ft_putstr_fd(command, STDERR_FILENO),
+		ft_putendl_fd(": command not found", STDERR_FILENO), exit(127), NULL);
 }
 
-char	**get_arg(char *argv, int format)
+char	**get_arg(char **argv, int num)
 {
 	char	**command;
 	char	**command_f2;
 	int		i;
 
-	command = ft_calloc(sizeof(char *), 2);
-	if (format == 2)
-		command = ft_split(argv, ' ');	
+	if (!ft_strchr(argv[num], '/'))
+	{
+		command = ft_split(argv[num], ' ');
+	}
 	else
 	{
-		command_f2 = ft_split(argv, '/');
+		command_f2 = ft_split(argv[num], '/');
 		i = 0;
 		while (command_f2[i])
 			++i;
-		if (ft_strchr(command_f2[i - 1], ' '))
-			command = ft_split(command_f2[i - 1], ' ');
-		else
-			command[0] = ft_strdup(command_f2[i - 1]);
+		command = ft_split(command_f2[i - 1], ' ');
 		ft_frematrix(command_f2);
 	}
 	return (command);
+}
+
+int	open_flags(char *argv, int proc)
+{
+	int	fd;
+
+	if (proc == 0)
+		fd = open(argv, O_RDONLY, 0644);
+	if (proc == 1)
+		fd = open(argv, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (fd == -1)
+	{
+		perror("Infile not existing / outfile not workable");
+		exit (1);
+	}
+	return (fd);
 }
