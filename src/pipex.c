@@ -6,7 +6,7 @@
 /*   By: carbon-m <carbon-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:02:20 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/02/10 19:04:24 by carbon-m         ###   ########.fr       */
+/*   Updated: 2025/02/11 12:24:10 by carbon-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int	main(int argc, char *argv[], char **env)
 {
 	int		pipefd[2];
-	pid_t	pid;
 
 	if (argc != 5 || argv[1][0] == 0 || argv[4][0] == 0)
 	{
@@ -25,7 +24,7 @@ int	main(int argc, char *argv[], char **env)
 	if (pipe(pipefd) == -1)
 		exit(-1);
 	child(argv, pipefd, env);
-	child2(argv, pipefd, env, &pid);
+	child2(argv, pipefd, env);
 	close (pipefd[0]);
 	close (pipefd[1]);
 	waitpid(-1, NULL, 0);
@@ -61,17 +60,18 @@ void	child(char **argv, int *pipefd, char **env)
 	}
 }
 
-void	child2(char *argv[], int *pipefd, char **env, pid_t *pid)
+void	child2(char *argv[], int *pipefd, char **env)
 {
 	int		fd;
+	pid_t	pid;
 
-	*pid = fork();
-	if (*pid == -1)
+	pid = fork();
+	if (pid == -1)
 	{
 		perror("Failed fork: ");
 		exit(-1);
 	}
-	if (*pid == 0)
+	if (pid == 0)
 	{
 		if (argv[3][0] == 0)
 		{

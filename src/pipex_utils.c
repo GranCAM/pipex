@@ -6,7 +6,7 @@
 /*   By: carbon-m <carbon-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:35:29 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/02/10 19:00:08 by carbon-m         ###   ########.fr       */
+/*   Updated: 2025/02/11 15:15:48 by carbon-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ char	*check_path(char *command, char **env, char **command_clean)
 	if (access(command, F_OK) == 0 && access(command, X_OK) == 0)
 		return (command);
 	split_path = ft_split(get_path(env), ':');
+	if (split_path == NULL)
+		errorpath(command, command_clean, split_path);
 	i = 0;
 	while (split_path[i])
 	{
@@ -42,16 +44,13 @@ char	*check_path(char *command, char **env, char **command_clean)
 		path = ft_strjoin_free(path, "/");
 		path = ft_strjoin_free(path, command_clean[0]);
 		if (access(path, F_OK) == 0 && access(path, X_OK) == 0)
-		{
-			ft_frematrix(split_path);
-			return (path);
-		}
+			return (ft_frematrix(split_path), path);
 		free(path);
 		++i;
 	}
 	return (ft_frematrix(command_clean), ft_frematrix(split_path),
-		ft_putstr_fd("zsh: command not found :", STDERR_FILENO),
 		ft_putstr_fd(command, STDERR_FILENO),
+		ft_putstr_fd(": command not found", STDERR_FILENO),
 		ft_putendl_fd("", STDERR_FILENO), exit(127), NULL);
 }
 
@@ -91,4 +90,16 @@ int	open_flags(char *argv, int proc)
 		exit (1);
 	}
 	return (fd);
+}
+
+void	errorpath(char *command, char **command_clean, char **split_path)
+{
+	if (command_clean)
+		ft_frematrix(command_clean);
+	if (split_path)
+		ft_frematrix(split_path);
+	ft_putstr_fd(command, 2);
+	ft_putstr_fd(": No such file or directory", 2);
+	ft_putendl_fd("", 2);
+	exit(127);
 }
