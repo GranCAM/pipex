@@ -1,42 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: carbon-m <carbon-m@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/07 11:02:20 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/05/28 19:00:36 by carbon-m         ###   ########.fr       */
+/*   Created: 2025/05/27 15:31:54 by carbon-m          #+#    #+#             */
+/*   Updated: 2025/05/28 18:41:09 by carbon-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipex_bonus.h"
 
 int	main(int argc, char *argv[], char **env)
 {
-	int		pipefd[2];
-
-	if (argc != 5 || argv[1][0] == 0 || argv[4][0] == 0)
+	if (argc <= 5 || argv[1][0] == 0 || argv[4][0] == 0)
 	{
-		ft_putstr_fd("\n./pipex file_input cmd cmd file_output\n\n", 2);
+		ft_putstr_fd(MSSG_INPUT, 2);
 		exit (-1);
 	}
-	if (pipe(pipefd) == -1)
-		exit(-1);
-	child(argv, pipefd, env);
-	child2(argv, pipefd, env);
-	close (pipefd[0]);
-	close (pipefd[1]);
+	child(argv, env, 0);
+	child(argv, env, 1);
 	waitpid(-1, NULL, 0);
 	waitpid(-1, NULL, 0);
 	return (0);
 }
 
-void	child(char **argv, int *pipefd, char **env)
+void	child(char **argv, char **env, int proc)
 {
 	int		fd;
 	pid_t	pid;
+	int		pipefd[2];
 
+	if (pipe(pipefd) == -1)
+		exit(-1);
 	pid = fork();
 	if (pid == -1)
 	{
@@ -50,41 +47,13 @@ void	child(char **argv, int *pipefd, char **env)
 			ft_putstr_fd("zsh: permission denied:\n", 2);
 			exit(127);
 		}
-		fd = open_flags(argv[1], 0);
+		fd = open_flags(argv[1], proc);
 		dup2(fd, STDIN_FILENO);
 		dup2(pipefd[1], STDOUT_FILENO);
 		close(fd);
 		close(pipefd[0]);
 		close(pipefd[1]);
 		process(argv, env, 2);
-	}
-}
-
-void	child2(char *argv[], int *pipefd, char **env)
-{
-	int		fd;
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == -1)
-	{
-		perror("Failed fork: ");
-		exit(-1);
-	}
-	if (pid == 0)
-	{
-		if (argv[3][0] == 0)
-		{
-			ft_putstr_fd("zsh: permission denied:\n", 2);
-			exit(127);
-		}
-	 	fd = open_flags(argv[4], 1);
-		dup2(fd, STDOUT_FILENO);
-		dup2(pipefd[0], STDIN_FILENO);
-		close(fd);
-		close(pipefd[0]);
-		close(pipefd[1]);
-		process(argv, env, 3);
 	}
 }
 
@@ -101,4 +70,31 @@ void	process(char **argv, char **env, int num)
 		perror("\npath/command not found\n\n");
 		exit (-1);
 	}
+}
+
+int	open_flags(char *argv, int proc)
+{
+	int	fd;
+
+	if (proc == 0)
+		fd = open(argv, O_RDONLY, 0644);
+	if (proc == 1)
+		fd = open(argv, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (proc == 2)
+		fd = open(argv, O_CREAT | O_WRONLY | O_APPEND, 0644);
+	if (fd == -1)
+	{
+		perror("Infile not existing / outfile not workable");
+		exit (1);
+	}
+	return (fd);
+}
+
+
+void	here_doc(char **argv, int argc)
+{
+	int	i;
+
+	i = 0;
+	
 }
