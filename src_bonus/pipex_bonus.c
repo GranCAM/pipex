@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carbon-m <carbon-m@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:31:54 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/05/28 18:41:09 by carbon-m         ###   ########.fr       */
+/*   Updated: 2025/06/01 19:15:15 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,4 +97,28 @@ void	here_doc(char **argv, int argc)
 
 	i = 0;
 	
+}
+
+void	child_process(char *argv, char **envp)
+{
+	pid_t	pid;
+	int		fd[2];
+
+	if (pipe(fd) == -1)
+		error();
+	pid = fork();
+	if (pid == -1)
+		error();
+	if (pid == 0)
+	{
+		close(fd[0]);
+		dup2(fd[1], STDOUT_FILENO);
+		execute(argv, envp);
+	}
+	else
+	{
+		close(fd[1]);
+		dup2(fd[0], STDIN_FILENO);
+		waitpid(pid, NULL, 0);
+	}
 }
