@@ -6,7 +6,7 @@
 /*   By: carbon-m <carbon-m@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:45:21 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/05/28 18:17:21 by carbon-m         ###   ########.fr       */
+/*   Updated: 2025/06/02 18:09:22 by carbon-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,18 @@
 ./pipex_bonus here_doc Limiter cmd cmd ... cmd file_output\n\n \
 ./pipex_bonus file_input cmd cmd ... cmd file_output\n\n"
 
-void	child(char *argv[], int *pipefd, char **env, int proc);
+void	child(char **argv, char **env, int num);
 void	process(char **argv, char **env, int num);
 int		open_flags(char *argv, int proc);
 char	*check_path(char *command, char **env, char **command_clean);
 char	*get_path(char **env);
 char	**get_arg(char **argv, int num);
-void	errorpath(char *command, char **command_clean, char **split_path);
+void	errorpath(char *command, char **command_clean, char **split_path, int way);
 char	*read_until_jump(char *s_buffer, int fd);
 char	*full_line(char *s_buffer);
 char	*rest_buffer(char *s_buffer);
 char	*get_next_line(int fd);
 char	*ft_calloc_gnl(size_t nmemb, size_t size);
+void	error_msg(char *msg);
 
 #endif

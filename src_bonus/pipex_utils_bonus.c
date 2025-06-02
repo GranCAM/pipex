@@ -6,30 +6,11 @@
 /*   By: carbon-m <carbon-m@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:36:55 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/05/28 18:19:20 by carbon-m         ###   ########.fr       */
+/*   Updated: 2025/06/02 20:16:00 by carbon-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
-
-char	*pipe_manager(char **argv, int *pipefd, int argc)
-{
-	int	fd;
-
-	if (argv[2][0] == 0 && argc != 1)
-	{
-		ft_putstr_fd("zsh: permission denied:\n", 2);
-		exit(127);
-	}
-	fd = open_flags(argv[1], 0);
-	dup2(fd, STDIN_FILENO);
-	dup2(pipefd[1], STDOUT_FILENO);
-	close(fd);
-	close(pipefd[0]);
-	close(pipefd[1]);
-	return (NULL);
-}
-
 
 char	*get_path(char **env)
 {
@@ -55,8 +36,9 @@ char	*check_path(char *command, char **env, char **command_clean)
 		return (command);
 	split_path = ft_split(get_path(env), ':');
 	if (split_path == NULL)
-		errorpath(command, command_clean, split_path);
+		errorpath(command, command_clean, split_path, 1);
 	i = 0;
+	
 	while (split_path[i])
 	{
 		path = ft_strdup(split_path[i]);
@@ -67,10 +49,8 @@ char	*check_path(char *command, char **env, char **command_clean)
 		free(path);
 		++i;
 	}
-	return (ft_frematrix(command_clean), ft_frematrix(split_path),
-		ft_putstr_fd(command, STDERR_FILENO),
-		ft_putstr_fd(": command not found", STDERR_FILENO),
-		ft_putendl_fd("", STDERR_FILENO), exit(127), NULL);
+	ft_putstr_fd("OK\n", 2);
+	return (errorpath(command, command_clean, split_path, 2), NULL);
 }
 
 char	**get_arg(char **argv, int num)
@@ -95,14 +75,22 @@ char	**get_arg(char **argv, int num)
 	return (command);
 }
 
-void	errorpath(char *command, char **command_clean, char **split_path)
+void	errorpath(char *command, char **command_clean, char **split_path, int way)
 {
 	if (command_clean)
 		ft_frematrix(command_clean);
 	if (split_path)
 		ft_frematrix(split_path);
-	ft_putstr_fd(command, 2);
-	ft_putstr_fd(": No such file or directory", 2);
+	if (way == 1)
+	{
+		ft_putstr_fd(command, 2);
+		ft_putstr_fd(": No such file or directory", 2);
+	}
+	else
+	{
+		ft_putstr_fd("zsh: command not found: ", 2);
+		ft_putstr_fd(command, 2);
+	}
 	ft_putendl_fd("", 2);
 	exit(127);
 }
