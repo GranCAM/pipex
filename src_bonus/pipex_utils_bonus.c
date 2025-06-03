@@ -6,7 +6,7 @@
 /*   By: carbon-m <carbon-m@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:36:55 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/06/02 20:16:00 by carbon-m         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:57:59 by carbon-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ char	*check_path(char *command, char **env, char **command_clean)
 	if (split_path == NULL)
 		errorpath(command, command_clean, split_path, 1);
 	i = 0;
-	
 	while (split_path[i])
 	{
 		path = ft_strdup(split_path[i]);
@@ -49,7 +48,6 @@ char	*check_path(char *command, char **env, char **command_clean)
 		free(path);
 		++i;
 	}
-	ft_putstr_fd("OK\n", 2);
 	return (errorpath(command, command_clean, split_path, 2), NULL);
 }
 
@@ -93,4 +91,37 @@ void	errorpath(char *command, char **command_clean, char **split_path, int way)
 	}
 	ft_putendl_fd("", 2);
 	exit(127);
+}
+
+void	here_doc(char *limiter)
+{
+	pid_t	reader;
+	int		fd[2];
+	char	*line;
+
+	if (pipe(fd) == -1)
+		error_msg("Failed to create the pipe");
+	reader = fork();
+	if (reader == 0)
+	{
+		close(fd[0]);
+		line = get_next_line(STDIN_FILENO);
+		while (line)
+		{
+			if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0)
+			{
+				free (line);
+				exit(0);
+			}
+			ft_putstr_fd(line, fd[1]);
+			free (line);
+			line = get_next_line(STDIN_FILENO);
+		}
+	}
+	else
+	{
+		close(fd[1]);
+		dup2(fd[0], STDIN_FILENO);
+		wait(NULL);
+	}
 }

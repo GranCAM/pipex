@@ -6,7 +6,7 @@
 /*   By: carbon-m <carbon-m@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:45:21 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/06/02 18:09:22 by carbon-m         ###   ########.fr       */
+/*   Updated: 2025/06/03 16:20:02 by carbon-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,6 @@ char	*rest_buffer(char *s_buffer);
 char	*get_next_line(int fd);
 char	*ft_calloc_gnl(size_t nmemb, size_t size);
 void	error_msg(char *msg);
+void	here_doc(char *limiter);
 
 #endif

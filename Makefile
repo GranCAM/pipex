@@ -21,9 +21,6 @@ OBJS = $(SRCS:%.c=%.o)
 
 OBJS_BONUS = $(SRCS_BONUS:%.c=%.o)
 
-#%.o : %.c
-#	$(CC) $(CFLAGS) -c $< -o $@
-
 $(NAME) : $(OBJS)
 	@make re -C libft
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
